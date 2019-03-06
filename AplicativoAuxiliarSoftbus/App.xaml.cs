@@ -1,6 +1,7 @@
 ﻿using AplicativoAuxiliarSoftbus.Views;
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Regions;
 using System.Windows;
 
 namespace AplicativoAuxiliarSoftbus
@@ -17,7 +18,7 @@ namespace AplicativoAuxiliarSoftbus
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
         }
+
     }
 }
