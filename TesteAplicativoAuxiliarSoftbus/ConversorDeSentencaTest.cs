@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AplicativoAuxiliarSoftbus.Models;
 using NUnit.Framework;
+using Newtonsoft.Json;
 
 namespace TesteAplicativoAuxiliarSoftbus
 {
@@ -25,7 +26,8 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Tipo = CampoDeSentenca.TiposVariavelCalrion.Long
                 }
             };
-            Assert.AreEqual(variaveisDeSentenca, ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca));
+            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description ="Testa se uma retorna duas variaveis do tipo Data")]
         public void RetornaObservableCollectionComDuasVariaveisData()
@@ -45,27 +47,29 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Tipo = CampoDeSentenca.TiposVariavelCalrion.Data
                 }
             };
-            Assert.AreEqual(variaveisDeSentenca, ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca));
+            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se uma retorna duas variaveis do tipo Hora")]
         public void RetornaObservableCollectionComDuasVariaveisHora()
         {
             string sentenca = "'select * from Tabela '&|\n" +
-                              " where HoraEmissao between '& format(wHoraInicial, @n_10) &' and '& format(wHoraInicial, @n_10)";
+                              " where HoraEmissao between '& format(wHoraInicial, @n_10) &' and '& format(wHoraFinal, @n_10)";
             ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
             {
                 new CampoDeSentenca
                 {
-                    NomeVariavel = "wDataInicial",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Data
+                    NomeVariavel = "wHoraInicial",
+                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Hora
                 },
                 new CampoDeSentenca
                 {
-                    NomeVariavel = "wDataFinal",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Data
+                    NomeVariavel = "wHoraFinal",
+                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Hora
                 }
             };
-            Assert.AreEqual(variaveisDeSentenca, ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca));
+            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retorna uma variavel string")]
         public void RetornaObservableCollectionComUmavariavelString()
@@ -80,7 +84,8 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Tipo = CampoDeSentenca.TiposVariavelCalrion.String
                 }
             };
-            Assert.AreEqual(variaveisDeSentenca, ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca));
+            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retorna uma vaiavel é retornada apenas uma vez mesmo reptindo na sentenca")]
         public void RetornaObservableCollectionComUmavariavelMesmoQueAVariavelrepitaNaSentenca()
@@ -95,7 +100,8 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Tipo = CampoDeSentenca.TiposVariavelCalrion.String
                 }
             };
-            Assert.AreEqual(variaveisDeSentenca, ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca));
+            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retornara uma variavel uma variavel Real")]
         public void RetornaObservableCollectionComUmaVariavelReal()
@@ -110,7 +116,8 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Tipo = CampoDeSentenca.TiposVariavelCalrion.Real
                 }
             };
-            Assert.AreEqual(variaveisDeSentenca, ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca));
+            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
     }
 }
