@@ -2,71 +2,71 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
-using TipoVariaveis = AplicativoAuxiliarSoftbus.Models.CampoDeSentenca.TiposVariavelCalrion;
+using TipoVariaveis = AplicativoAuxiliarSoftbus.Models.VariavelCalrion.TipoDeVariavel;
 
 namespace AplicativoAuxiliarSoftbus.Models
 {
     public class ConversorDeSentenca
     {
-        public static ObservableCollection<CampoDeSentenca> ListaCamposDaSentencaEmClarion(string sentenca)
+        public static ObservableCollection<VariavelCalrion> ExtrairVariaveisCalrionDeSentenca(string sentenca)
         {
-            ObservableCollection<CampoDeSentenca> camposDeSentenca = new ObservableCollection<CampoDeSentenca>();
+            ObservableCollection<VariavelCalrion> colecaoDeVariaveisCalrion = new ObservableCollection<VariavelCalrion>();
             // BUSCA VARIAVEIS LONG
-            Regex rgx = new Regex(@"(?<=((format)\())[A-Z\:\\_\\d]+(?=,)", RegexOptions.IgnoreCase);
-            MatchCollection matchsVariaves = rgx.Matches(sentenca);
-            foreach (Match item in matchsVariaves)
+            Regex expressaoRegular = new Regex(@"(?<=((format)\())[A-Z\:\\_\\d]+(?=,)", RegexOptions.IgnoreCase);
+            MatchCollection colecaoDeOcorrenciasDaExpressaoRegular = expressaoRegular.Matches(sentenca);
+            foreach (Match ocorrenciaDeVariavelLong in colecaoDeOcorrenciasDaExpressaoRegular)
             {
-                if (camposDeSentenca.Count(p => p.NomeVariavel == item.Value) == 0)
+                if (colecaoDeVariaveisCalrion.Count(p => p.NomeVariavel == ocorrenciaDeVariavelLong.Value) == 0)
                 {
-                    CampoDeSentenca campoSentenca = new CampoDeSentenca
+                    VariavelCalrion variavelClarion = new VariavelCalrion
                     {
-                        NomeVariavel = item.Value,
+                        NomeVariavel = ocorrenciaDeVariavelLong.Value,
                         Tipo = TipoVariaveis.Long
                     };
-                    if (campoSentenca.NomeVariavel.ToLower().Contains("data"))
-                        campoSentenca.Tipo = TipoVariaveis.Data;
-                    else if (campoSentenca.NomeVariavel.ToLower().Contains("hora"))
-                        campoSentenca.Tipo = TipoVariaveis.Hora;
+                    if (variavelClarion.NomeVariavel.ToLower().Contains("data"))
+                        variavelClarion.Tipo = TipoVariaveis.Data;
+                    else if (variavelClarion.NomeVariavel.ToLower().Contains("hora"))
+                        variavelClarion.Tipo = TipoVariaveis.Hora;
 
-                    camposDeSentenca.Add(campoSentenca);
+                    colecaoDeVariaveisCalrion.Add(variavelClarion);
                 }
             }
 
             // BUSCA STRINGS
-            rgx = new Regex(@"(?<=(('''\s{0,}&\s{0,}clip\()))[A-Z-\:\\_\d]+(?=(\)\s{0,}&\s?'''))", RegexOptions.IgnoreCase);
-            foreach (Match item in rgx.Matches(sentenca))
+            expressaoRegular = new Regex(@"(?<=(('''\s{0,}&\s{0,}clip\()))[A-Z-\:\\_\d]+(?=(\)\s{0,}&\s?'''))", RegexOptions.IgnoreCase);
+            foreach (Match ocorrenciaDeVariavelString in expressaoRegular.Matches(sentenca))
             {
-                if (camposDeSentenca.Count(p => p.NomeVariavel == item.Value) == 0)
+                if (colecaoDeVariaveisCalrion.Count(p => p.NomeVariavel == ocorrenciaDeVariavelString.Value) == 0)
                 {
-                    var campoSentenca = new CampoDeSentenca
+                    VariavelCalrion variavelCalrion = new VariavelCalrion
                     {
-                        NomeVariavel = item.Value,
+                        NomeVariavel = ocorrenciaDeVariavelString.Value,
                         Tipo = TipoVariaveis.String
                     };
 
-                    camposDeSentenca.Add(campoSentenca);
+                    colecaoDeVariaveisCalrion.Add(variavelCalrion);
                 }
 
             }
 
             //BUSCA NÚMEROS REAIS
-            rgx = new Regex(@"(?<=(&\s{0,}(?!(format\(|clip\())))[A-Z-\:-\\_\d]{1,}", RegexOptions.IgnoreCase);
-            foreach (Match item in rgx.Matches(sentenca))
+            expressaoRegular = new Regex(@"(?<=(&\s{0,}(?!(format\(|clip\())))[A-Z-\:-\\_\d]{1,}", RegexOptions.IgnoreCase);
+            foreach (Match ocorrenciaDeVAriavelReal in expressaoRegular.Matches(sentenca))
             {
-                if (camposDeSentenca.Count(p => p.NomeVariavel == item.Value) == 0)
+                if (colecaoDeVariaveisCalrion.Count(p => p.NomeVariavel == ocorrenciaDeVAriavelReal.Value) == 0)
                 {
-                    var campoSentenca = new CampoDeSentenca
+                    VariavelCalrion variavelCalrion = new VariavelCalrion
                     {
-                        NomeVariavel = item.Value,
+                        NomeVariavel = ocorrenciaDeVAriavelReal.Value,
                         Tipo = TipoVariaveis.Real
                     };
 
-                    camposDeSentenca.Add(campoSentenca);
+                    colecaoDeVariaveisCalrion.Add(variavelCalrion);
                 }
 
             }
 
-            return camposDeSentenca;
+            return colecaoDeVariaveisCalrion;
         }
 
         public static string ConverteSentencaClarionParaSQL(string sentencaClarion)
