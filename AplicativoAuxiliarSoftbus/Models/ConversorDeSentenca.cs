@@ -69,9 +69,24 @@ namespace AplicativoAuxiliarSoftbus.Models
             return camposDeSentenca;
         }
 
-        public static string ConverteSentencaClarionParaSQL(string sentencaClarion)
+        public static string ConverteSentencaClarionParaSQL(string sentencaClarion, ObservableCollection<CampoDeSentenca> campoDeSentencas)
         {
-            throw new NotImplementedException();
+            string resultado = sentencaClarion;
+            var expressao = @"('?)(&\s{0,}(((format)|(clip))\()?)[A-Z-\:-_\d]{1,}\,?(\s?@n_10)?\)?\s?\&?'?";
+            var rgx = new Regex(expressao, RegexOptions.IgnoreCase);
+            foreach (Match item in rgx.Matches(resultado))
+            {
+                var campoDeSentenca = campoDeSentencas.FirstOrDefault(p => item.Value.Contains(p.NomeVariavel));
+                if (campoDeSentenca != null)
+                    resultado = resultado.Replace(item.Value, campoDeSentenca.Valor);
+            }
+            resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
+            resultado = Regex.Replace(resultado.Trim(), @"^\(", "");
+            if (Regex.Matches(resultado, @"\(").Count < Regex.Matches(resultado, @"\)").Count)
+                resultado = Regex.Replace(resultado.Trim(), @"\)$", "");
+
+            resultado = resultado.Replace("''", "]").Replace("'", "").Replace("]", "'").Replace("&", "");
+            return resultado;
         }
 
     }
