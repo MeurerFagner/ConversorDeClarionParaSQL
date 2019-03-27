@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace AplicativoAuxiliarSoftbus.Models
 {
-    public class CampoDeSentenca : BindableBase
+    public class VariavelCalrion : BindableBase
     {
-        public enum TiposVariavelCalrion
+        public enum TipoDeVariavel
         {
             Real,
             Long,
@@ -24,14 +24,14 @@ namespace AplicativoAuxiliarSoftbus.Models
             get { return _nomeVariavel; }
             set { SetProperty(ref _nomeVariavel, value); }
         }
-        private TiposVariavelCalrion _tipo;
-        public TiposVariavelCalrion Tipo
+        private TipoDeVariavel _tipo;
+        public TipoDeVariavel Tipo
         {
             get { return _tipo; }
             set { SetProperty(ref _tipo, value); }
         }
 
-        //INICIALMENTE SERÁ UMA STRING, MAIS A FRENTE DEVE SER ADAPITADO PARA USAR UM TIPO VARIAVEL
+        //TODO: INICIALMENTE SERÁ UMA STRING, MAIS A FRENTE DEVE SER ADAPITADO PARA USAR UM TIPO VARIAVEL
         private string _valor;
         public string Valor
         {

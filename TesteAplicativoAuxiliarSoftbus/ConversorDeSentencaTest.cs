@@ -19,15 +19,15 @@ namespace TesteAplicativoAuxiliarSoftbus
         {
             string sentenca = "'select * from Tabela '&|\n" +
                               " where ID = '& format(wVariavel, @n_10)";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wVariavel",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Long
+                    Tipo = VariavelCalrion.TipoDeVariavel.Long
                 }
             };
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se uma retorna duas variaveis do tipo Data")]
@@ -35,20 +35,20 @@ namespace TesteAplicativoAuxiliarSoftbus
         {
             string sentenca = "'select * from Tabela '&|\n" +
                               " where Emissao between '& format(wDataInicial, @n_10) &' and '& format(wDataFinal, @n_10)";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wDataInicial",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Data
+                    Tipo = VariavelCalrion.TipoDeVariavel.Data
                 },
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wDataFinal",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Data
+                    Tipo = VariavelCalrion.TipoDeVariavel.Data
                 }
             };
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se uma retorna duas variaveis do tipo Hora")]
@@ -56,20 +56,20 @@ namespace TesteAplicativoAuxiliarSoftbus
         {
             string sentenca = "'select * from Tabela '&|\n" +
                               " where HoraEmissao between '& format(wHoraInicial, @n_10) &' and '& format(wHoraFinal, @n_10)";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wHoraInicial",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Hora
+                    Tipo = VariavelCalrion.TipoDeVariavel.Hora
                 },
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wHoraFinal",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Hora
+                    Tipo = VariavelCalrion.TipoDeVariavel.Hora
                 }
             };
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retorna uma variavel string")]
@@ -77,15 +77,15 @@ namespace TesteAplicativoAuxiliarSoftbus
         {
             string sentenca = "'select * from Tabela '&|\n" +
                               " where Nome = '''& clip(wNome) &'''' ";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wNome",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.String
+                    Tipo = VariavelCalrion.TipoDeVariavel.String
                 }
             };
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retorna uma vaiavel é retornada apenas uma vez mesmo reptindo na sentenca")]
@@ -93,15 +93,15 @@ namespace TesteAplicativoAuxiliarSoftbus
         {
             string sentenca = "'select * from Tabela '&|\n" +
                               " where Nome = '''& clip(wNome) &''' or Nome2 = '''& clip(wNome) &''' '";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wNome",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.String
+                    Tipo = VariavelCalrion.TipoDeVariavel.String
                 }
             };
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retornara uma variavel uma variavel Real")]
@@ -109,15 +109,15 @@ namespace TesteAplicativoAuxiliarSoftbus
         {
             string sentenca = "'select * from Tabela '&|\n" +
                               " where Valor >= '& wValor ";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wValor",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Real
+                    Tipo = VariavelCalrion.TipoDeVariavel.Real
                 }
             };
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca);
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
         [Test(Description = "Testa se retornara uma variavel de cada tipo")]
@@ -127,36 +127,36 @@ namespace TesteAplicativoAuxiliarSoftbus
                              "' where Valor >= '& wValor &' and ''Sim'' = '''& clip(wString) &''' and '&|" +
                              "'       Data = '& format(wData,@n_10) &' and hora >= '& format(wHora1, @n_10) &' and '&|" +
                              "'       Codigo = '& format(GLO:Codigo, @n_10) ";
-            ObservableCollection<CampoDeSentenca> variaveisDeSentenca = new ObservableCollection<CampoDeSentenca>
+            ObservableCollection<VariavelCalrion> variaveisDeSentenca = new ObservableCollection<VariavelCalrion>
             {
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wValor",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Real
+                    Tipo = VariavelCalrion.TipoDeVariavel.Real
                 },
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wString",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.String
+                    Tipo = VariavelCalrion.TipoDeVariavel.String
                 },
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wData",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Data
+                    Tipo = VariavelCalrion.TipoDeVariavel.Data
                 },
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "wHora1",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Hora
+                    Tipo = VariavelCalrion.TipoDeVariavel.Hora
                 },
-                new CampoDeSentenca
+                new VariavelCalrion
                 {
                     NomeVariavel = "GLO:Codigo",
-                    Tipo = CampoDeSentenca.TiposVariavelCalrion.Long
+                    Tipo = VariavelCalrion.TipoDeVariavel.Long
                 },
             };
-            variaveisDeSentenca = variaveisDeSentenca.OrderBy(p => p.NomeVariavel) as ObservableCollection<CampoDeSentenca>;
-            var resultado = ConversorDeSentenca.ListaCamposDaSentencaEmClarion(sentenca).OrderBy(p => p.NomeVariavel) as ObservableCollection<CampoDeSentenca>;
+            variaveisDeSentenca = variaveisDeSentenca.OrderBy(p => p.NomeVariavel) as ObservableCollection<VariavelCalrion>;
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca).OrderBy(p => p.NomeVariavel) as ObservableCollection<VariavelCalrion>;
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
 
