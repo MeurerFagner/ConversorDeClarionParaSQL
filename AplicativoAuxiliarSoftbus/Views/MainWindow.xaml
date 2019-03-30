@@ -3,8 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="350" Width="525">
-    <StackPanel>
+        Title="{Binding Title}" 
+        SizeToContent="WidthAndHeight"
+        >
+    <StackPanel
+        CanVerticallyScroll="True"
+        MaxWidth="800"
+        MaxHeight="600"
+>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Width="Auto" Command="{Binding NavigateCommand}" CommandParameter="FormataSentencaClarion">Converte sentença SQL</Button>
             <Button Width="Auto" Command="{Binding NavigateCommand}" CommandParameter="RegistroDeTarefas">Registro de tarefas Realizadas</Button>

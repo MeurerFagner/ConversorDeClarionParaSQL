@@ -56,7 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\CampoDeSentenca.cs" />
+    <Compile Include="Enums\TipoDeVariavel.cs" />
+    <Compile Include="Models\VariavelClarion.cs" />
     <Compile Include="Models\ConversorDeSentenca.cs" />
     <Compile Include="ViewModels\RegistroDeTarefasViewModel.cs" />
     <Compile Include="Views\RegistroDeTarefas.xaml.cs">

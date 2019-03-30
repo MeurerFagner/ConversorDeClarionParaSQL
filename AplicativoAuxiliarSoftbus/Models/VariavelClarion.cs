@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using AplicativoAuxiliarSoftbus.Enums;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,16 +9,8 @@ using System.Threading.Tasks;
 
 namespace AplicativoAuxiliarSoftbus.Models
 {
-    public class VariavelCalrion : BindableBase
+    public class VariavelClarion : BindableBase
     {
-        public enum TipoDeVariavel
-        {
-            Real,
-            Long,
-            String,
-            Data,
-            Hora,
-        }
         private string _nomeVariavel;
         public string NomeVariavel
         {

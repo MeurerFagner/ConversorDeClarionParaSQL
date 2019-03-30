@@ -1,16 +1,19 @@
-﻿using System;
+﻿using AplicativoAuxiliarSoftbus.Enums;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
-using TipoVariaveis = AplicativoAuxiliarSoftbus.Models.VariavelCalrion.TipoDeVariavel;
+//using TipoDeVariavel = AplicativoAuxiliarSoftbus.Models.VariavelClarion.TipoDeVariavel;
 
 namespace AplicativoAuxiliarSoftbus.Models
 {
     public class ConversorDeSentenca
     {
-        public static ObservableCollection<VariavelCalrion> ExtrairVariaveisCalrionDeSentenca(string sentenca)
+        public static ObservableCollection<VariavelClarion> ExtrairVariaveisCalrionDeSentenca(string sentenca)
         {
-            ObservableCollection<VariavelCalrion> colecaoDeVariaveisCalrion = new ObservableCollection<VariavelCalrion>();
+            ObservableCollection<VariavelClarion> colecaoDeVariaveisCalrion = new ObservableCollection<VariavelClarion>();
+            if (string.IsNullOrEmpty(sentenca))
+                return colecaoDeVariaveisCalrion;
             // BUSCA VARIAVEIS LONG
             Regex expressaoRegular = new Regex(@"(?<=((format)\())[A-Z\:\\_\\d]+(?=,)", RegexOptions.IgnoreCase);
             MatchCollection colecaoDeOcorrenciasDaExpressaoRegular = expressaoRegular.Matches(sentenca);
@@ -18,15 +21,15 @@ namespace AplicativoAuxiliarSoftbus.Models
             {
                 if (colecaoDeVariaveisCalrion.Count(p => p.NomeVariavel == ocorrenciaDeVariavelLong.Value) == 0)
                 {
-                    VariavelCalrion variavelClarion = new VariavelCalrion
+                    VariavelClarion variavelClarion = new VariavelClarion
                     {
                         NomeVariavel = ocorrenciaDeVariavelLong.Value,
-                        Tipo = TipoVariaveis.Long
+                        Tipo = TipoDeVariavel.Long
                     };
                     if (variavelClarion.NomeVariavel.ToLower().Contains("data"))
-                        variavelClarion.Tipo = TipoVariaveis.Data;
+                        variavelClarion.Tipo = TipoDeVariavel.Data;
                     else if (variavelClarion.NomeVariavel.ToLower().Contains("hora"))
-                        variavelClarion.Tipo = TipoVariaveis.Hora;
+                        variavelClarion.Tipo = TipoDeVariavel.Hora;
 
                     colecaoDeVariaveisCalrion.Add(variavelClarion);
                 }
@@ -38,10 +41,10 @@ namespace AplicativoAuxiliarSoftbus.Models
             {
                 if (colecaoDeVariaveisCalrion.Count(p => p.NomeVariavel == ocorrenciaDeVariavelString.Value) == 0)
                 {
-                    VariavelCalrion variavelCalrion = new VariavelCalrion
+                    VariavelClarion variavelCalrion = new VariavelClarion
                     {
                         NomeVariavel = ocorrenciaDeVariavelString.Value,
-                        Tipo = TipoVariaveis.String
+                        Tipo = TipoDeVariavel.String
                     };
 
                     colecaoDeVariaveisCalrion.Add(variavelCalrion);
@@ -55,10 +58,10 @@ namespace AplicativoAuxiliarSoftbus.Models
             {
                 if (colecaoDeVariaveisCalrion.Count(p => p.NomeVariavel == ocorrenciaDeVAriavelReal.Value) == 0)
                 {
-                    VariavelCalrion variavelCalrion = new VariavelCalrion
+                    VariavelClarion variavelCalrion = new VariavelClarion
                     {
                         NomeVariavel = ocorrenciaDeVAriavelReal.Value,
-                        Tipo = TipoVariaveis.Real
+                        Tipo = TipoDeVariavel.Real
                     };
 
                     colecaoDeVariaveisCalrion.Add(variavelCalrion);
@@ -69,14 +72,18 @@ namespace AplicativoAuxiliarSoftbus.Models
             return colecaoDeVariaveisCalrion;
         }
 
-        public static string ConverteSentencaClarionParaSQL(string sentencaClarion, ObservableCollection<CampoDeSentenca> campoDeSentencas)
+        public static string ConverteSentencaClarionParaSQL(string sentencaClarion, ObservableCollection<VariavelClarion> variaveisCalrions)
         {
             string resultado = sentencaClarion;
+
+            resultado = resultado.Replace("\n", "");
+            resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
+
             var expressao = @"('?)(&\s{0,}(((format)|(clip))\()?)[A-Z-\:-_\d]{1,}\,?(\s?@n_10)?\)?\s?\&?'?";
             var rgx = new Regex(expressao, RegexOptions.IgnoreCase);
             foreach (Match item in rgx.Matches(resultado))
             {
-                var campoDeSentenca = campoDeSentencas.FirstOrDefault(p => item.Value.Contains(p.NomeVariavel));
+                var campoDeSentenca = variaveisCalrions.FirstOrDefault(p => item.Value.Contains(p.NomeVariavel));
                 if (campoDeSentenca != null)
                     resultado = resultado.Replace(item.Value, campoDeSentenca.Valor);
             }
