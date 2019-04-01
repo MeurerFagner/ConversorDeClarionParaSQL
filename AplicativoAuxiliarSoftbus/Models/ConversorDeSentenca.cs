@@ -1,5 +1,6 @@
 ﻿using AplicativoAuxiliarSoftbus.Enums;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -76,8 +77,7 @@ namespace AplicativoAuxiliarSoftbus.Models
         {
             string resultado = sentencaClarion;
 
-            resultado = resultado.Replace("\n", "");
-            resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
+            resultado = string.Join("", Regex.Split(resultado, @"[\r\n]"));
 
             var expressao = @"('?)(&\s{0,}(((format)|(clip))\()?)[A-Z-\:-_\d]{1,}\,?(\s?@n_10)?\)?\s?\&?'?";
             var rgx = new Regex(expressao, RegexOptions.IgnoreCase);
