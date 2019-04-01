@@ -9,12 +9,7 @@
     <StackPanel
         CanVerticallyScroll="True"
         MaxWidth="800"
-        MaxHeight="600"
->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Width="Auto" Command="{Binding NavigateCommand}" CommandParameter="FormataSentencaClarion">Converte sentença SQL</Button>
-            <Button Width="Auto" Command="{Binding NavigateCommand}" CommandParameter="RegistroDeTarefas">Registro de tarefas Realizadas</Button>
-        </StackPanel>
+        MaxHeight="600">
         <ContentControl prism:RegionManager.RegionName="ContentRegion" />
     </StackPanel>
 </Window>
