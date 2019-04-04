@@ -34,8 +34,26 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
             set { SetProperty(ref _sentencaFormatada, value); }
         }
 
-        
-        public ObservableCollection<VariavelClarion> VariaveisClarion { get; set; }
+
+        private ObservableCollection<VariavelClarion> _variaveisClarion;
+
+        public ObservableCollection<VariavelClarion> VariaveisClarion
+        {
+            get { return _variaveisClarion; }
+            set
+            {
+                _variaveisClarion = value;
+                foreach (var item in _variaveisClarion)
+                {
+                    item.PropertyChanged += (sender, e) =>
+                    {
+                        RaisePropertyChanged("VariaveisClarion");
+                    };
+                }
+            }
+        }
+
+        //public ObservableCollection<VariavelClarion> VariaveisClarion { get; set; }
         public DelegateCommand ConverterSentencaCommand { get; private set; }
         public InteractionRequest<INotification> NotificationRequest { get; private set; }
 
@@ -44,9 +62,9 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
             VariaveisClarion = new ObservableCollection<VariavelClarion>();
             //SentencaCalrion = "Teste";
             NotificationRequest = new InteractionRequest<INotification>();
-            ConverterSentencaCommand = new DelegateCommand(Convertersenteca);
-            //ConverterSentencaCommand.ObservesProperty(() => SentencaCalrion);
-            //ConverterSentencaCommand.ObservesProperty(() => VariaveisClarion);
+            ConverterSentencaCommand = new DelegateCommand(Convertersenteca,CanConverterSentenca);
+            ConverterSentencaCommand.ObservesProperty(() => SentencaCalrion);
+            ConverterSentencaCommand.ObservesProperty(() => VariaveisClarion);
             
         }
 
