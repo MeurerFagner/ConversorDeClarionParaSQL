@@ -12,7 +12,7 @@ namespace AplicativoAuxiliarSoftbus.Views
         {
             InitializeComponent();
             regionManager.RegisterViewWithRegion("ContentRegion", typeof(FormataSentencaClarion));
-           // regionManager.RegisterViewWithRegion("ContentRegion", typeof(RegistroDeTarefas));
+            //regionManager.RegisterViewWithRegion("ContentRegion", typeof(RegistroDeTarefas));
         }
     }
 }
