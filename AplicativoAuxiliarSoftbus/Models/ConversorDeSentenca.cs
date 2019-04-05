@@ -76,10 +76,9 @@ namespace AplicativoAuxiliarSoftbus.Models
         {
             string resultado = sentencaClarion;
 
-            //resultado = resultado.Replace("\n", "");
-            //resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
+            resultado = Regex.Replace(resultado, @"(exeSQL\d?\('|send\(\w+,')","", RegexOptions.IgnoreCase);
 
-            var expressao = @"('&\s*|(?<=\|\s*))(((format)|(clip))\()?[A-Z-\:-_\d]{1,}\,?(\s*@n_10)?\)?\s*(&'|(?=&\s*))?";
+            var expressao = @"('&\s*|(?<=\|\s*))(((format)|(clip))\()?[A-Z-\:-_\d]{1,}\,?(\s*@n_?\d+)?\)?\s*(&'|(?=&\s*))?";
             var rgx = new Regex(expressao,RegexOptions.IgnoreCase | RegexOptions.Multiline);
             foreach (Match item in rgx.Matches(resultado))
             {
