@@ -76,11 +76,11 @@ namespace AplicativoAuxiliarSoftbus.Models
         {
             string resultado = sentencaClarion;
 
-            resultado = resultado.Replace("\n", "");
-            resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
+            //resultado = resultado.Replace("\n", "");
+            //resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
 
-            var expressao = @"('?)(&\s{0,}(((format)|(clip))\()?)[A-Z-\:-_\d]{1,}\,?(\s?@n_10)?\)?\s?\&?'?";
-            var rgx = new Regex(expressao, RegexOptions.IgnoreCase);
+            var expressao = @"('&\s*|(?<=\|\s*))(((format)|(clip))\()?[A-Z-\:-_\d]{1,}\,?(\s*@n_10)?\)?\s*(&'|(?=&\s*))?";
+            var rgx = new Regex(expressao,RegexOptions.IgnoreCase | RegexOptions.Multiline);
             foreach (Match item in rgx.Matches(resultado))
             {
                 var campoDeSentenca = variaveisCalrions.FirstOrDefault(p => item.Value.Contains(p.NomeVariavel));

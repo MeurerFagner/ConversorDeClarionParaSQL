@@ -230,7 +230,7 @@ namespace TesteAplicativoAuxiliarSoftbus
         [Test(Description ="Testa conversão de Senteça que possui quebra de linha(&|) logo apos a variavel")]
         public void RetornaSentecaComQuebraDeLinhaAposVariavel()
         {
-            var sentenca = "select * from Tabelas '&|" +
+            var sentenca = "'select * from Tabelas '&|" +
                          "' where Codigo = '& format(wCodigo, @n_10) &|"+
                          "' or Empresa = '& format(wEmpresa,@n_10) &|"+
                          "' order by 1'";
@@ -258,10 +258,10 @@ namespace TesteAplicativoAuxiliarSoftbus
         [Test(Description = "Testa conversão de Senteça que possui variavel no inicio da linha")]
         public void RetornaSentecaComVariavelNoInicioDaLinha()
         {
-            var sentenca = "select * from Tabelas '&|" +
+            var sentenca = "'select * from Tabelas '&|" +
                  "' where Codigo = '& format(wCodigo, @n_10) &' or '&|" +
-                 "  format(wEmpresa,@n_10) &' = Empresa '&|" +
-                 "  clip(wOrder)";
+                  " format(wEmpresa,@n_10) &' = Empresa '&|" +
+                  " clip(wOrder)";
             var variavesDeSentenca = new ObservableCollection<VariavelClarion>
             {
                 new VariavelClarion
