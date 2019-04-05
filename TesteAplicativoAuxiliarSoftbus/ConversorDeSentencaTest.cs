@@ -292,7 +292,7 @@ namespace TesteAplicativoAuxiliarSoftbus
         [Test(Description ="Testaconversão de Sentenca que possui format de tipos variados")]
         public void RetornaSentencaComTiposDeFormatsVariados()
         {
-            var sentenca = "select * from Tabelas '&|" +
+            var sentenca = "'select * from Tabelas '&|" +
                  "' where Codigo = '& format(wCodigo, @n_3) &' or '& format(wEmpresa,@n04) &' = Empresa'";
             var variavesDeSentenca = new ObservableCollection<VariavelClarion>
             {
@@ -316,7 +316,7 @@ namespace TesteAplicativoAuxiliarSoftbus
         [Test(Description = "Testa se converte para sentenca mesmo dentro do ExeSQL")]
         public void RetornaSentencaDentroDoExeSQL()
         {
-            var sentenca = "exeSQL('select * from Tabelas '&|" +
+            var sentenca = "exeSQL2('select * from Tabelas '&|" +
                            "' where Codigo = '& format(wCodigo, @n_10))";
             var variavesDeSentenca = new ObservableCollection<VariavelClarion>
             {
@@ -329,6 +329,51 @@ namespace TesteAplicativoAuxiliarSoftbus
             };
             var resultado = "select * from Tabelas \n" +
                             " where Codigo = 110";
+
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
+
+        }
+        [Test(Description = "Testa se converte para sentenca mesmo dentro do SEND")]
+        public void RetornaSentencaDentroDoSend()
+        {
+            var sentenca = "send(Tabelas,'select * from Tabelas '&|" +
+                           "' where Codigo = '& format(wCodigo, @n_10))";
+            var variavesDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "wCodigo",
+                    Tipo = TipoDeVariavel.Long,
+                    Valor = "110"
+                },
+            };
+            var resultado = "select * from Tabelas \n" +
+                            " where Codigo = 110";
+
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
+
+        }
+
+        [Test(Description = "Testa se converte para sentenca mantaendo a indentaçao")]
+        public void RetornaSentencaMantendoIndentacao()
+        {
+            var sentenca = "'select * from Tabelas '&|" +
+                           "' where Codigo = '& format(wCodigo, @n_10) &' and '&|" +
+                           "'       Campo1 = campo1 and '&|" +
+                           "      ' campo2 = Campo2";
+            var variavesDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "wCodigo",
+                    Tipo = TipoDeVariavel.Long,
+                    Valor = "110"
+                },
+            };
+            var resultado = "select * from Tabelas \n" +
+                           " where Codigo = 110 and \n"+
+                           "       Campo1 = campo1 and \n" +
+                           "       campo2 = Campo2";
 
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
 
