@@ -20,6 +20,7 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
                 if (value != _sentencaCalrion)
                 {
                     VariaveisClarion = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(value);
+                    SentencaFormatada = String.Empty;
                     RaisePropertyChanged("VariaveisClarion");
                 }
 
@@ -55,6 +56,7 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
 
         //public ObservableCollection<VariavelClarion> VariaveisClarion { get; set; }
         public DelegateCommand ConverterSentencaCommand { get; private set; }
+        public DelegateCommand CopyToClipBoarSentecna { get; private set; }
         public InteractionRequest<INotification> NotificationRequest { get; private set; }
 
         public FormataSentencaClarionViewModel()
@@ -63,6 +65,7 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
             //SentencaCalrion = "Teste";
             NotificationRequest = new InteractionRequest<INotification>();
             ConverterSentencaCommand = new DelegateCommand(Convertersenteca,CanConverterSentenca);
+            CopyToClipBoarSentecna = new DelegateCommand(() => Clipboard.SetText(SentencaFormatada), () => !String.IsNullOrWhiteSpace(SentencaFormatada)).ObservesProperty(() => SentencaFormatada);
             ConverterSentencaCommand.ObservesProperty(() => SentencaCalrion);
             ConverterSentencaCommand.ObservesProperty(() => VariaveisClarion);
             
@@ -71,23 +74,23 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
         private bool CanConverterSentenca()
         {
             if (string.IsNullOrWhiteSpace(_sentencaCalrion)) return false;
-            if (VariaveisClarion.Count(p => string.IsNullOrWhiteSpace(p.Valor)) > 0) return false;
+            if (VariaveisClarion.Count(varialel => (string.IsNullOrWhiteSpace(varialel.Valor) && varialel.Tipo != Enums.TipoDeVariavel.String)) > 0) return false;
             return true;
         }
 
         private void Convertersenteca()
         {
             SentencaFormatada = ConversorDeSentenca.ConverteSentencaClarionParaSQL(SentencaCalrion, VariaveisClarion);
-            NotificationRequest.Raise(new Notification
-            {
-                Title = "Resultado da Conversão",
-                Content = SentencaFormatada
-            }, r => {
+            //NotificationRequest.Raise(new Notification
+            //{
+            //    Title = "Resultado da Conversão",
+            //    Content = SentencaFormatada
+            //}, r => {
                 
-                var result = MessageBox.Show("Copiar Sentença para area de transferencia?", "Copy to ClipBoard", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
-                    Clipboard.SetText(SentencaFormatada);
-            });
+            //    var result = MessageBox.Show("Copiar Sentença para area de transferencia?", "Copy to ClipBoard", MessageBoxButton.YesNo);
+            //    if (result == MessageBoxResult.Yes)
+            //        Clipboard.SetText(SentencaFormatada);
+            //});
         }
 
 

@@ -1,15 +1,18 @@
-﻿<Window x:Class="AplicativoAuxiliarSoftbus.Views.MainWindow"
+﻿<Controls:MetroWindow x:Class="AplicativoAuxiliarSoftbus.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="{Binding Title}" 
-        SizeToContent="WidthAndHeight"
-        >
-    <StackPanel
-        CanVerticallyScroll="True"
-        MaxWidth="800"
-        MaxHeight="600">
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
-    </StackPanel>
-</Window>
+        BorderThickness="0" 
+        GlowBrush="Black"
+        
+        WindowTransitionsEnabled="True"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="800"
+        MinHeight="600">
+    <Grid>
+        <ContentControl Background="Red"  Margin="8" prism:RegionManager.RegionName="ContentRegion"/>
+    </Grid>
+</Controls:MetroWindow>
