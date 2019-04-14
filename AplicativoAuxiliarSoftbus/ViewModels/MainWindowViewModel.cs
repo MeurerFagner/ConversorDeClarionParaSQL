@@ -9,7 +9,7 @@ namespace AplicativoAuxiliarSoftbus.ViewModels
     {
         private readonly IRegionManager _regionManager;
         public DelegateCommand<string> NavigateCommand { get; private set; }
-        private string _title = "Prism Application";
+        private string _title = "CONVERSOR DE SENTENÇA CLARION";
         public string Title
         {
             get { return _title; }

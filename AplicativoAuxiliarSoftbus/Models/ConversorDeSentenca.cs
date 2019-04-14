@@ -75,7 +75,7 @@ namespace AplicativoAuxiliarSoftbus.Models
         public static string ConverteSentencaClarionParaSQL(string sentencaClarion, ObservableCollection<VariavelClarion> variaveisCalrions)
         {
             string resultado = sentencaClarion;
-
+            resultado = Regex.Replace(resultado, @"\r\n","");
             resultado = Regex.Replace(resultado, @"(exeSQL\d?\('|send\(\w+,')","", RegexOptions.IgnoreCase);
 
             var expressao = @"('&\s*|(?<=\|\s*))(((format)|(clip))\()?[A-Z-\:-_\d]{1,}\,?(\s*@n_?\d+)?\)?\s*(&'|(?=&\s*))?";
@@ -86,7 +86,7 @@ namespace AplicativoAuxiliarSoftbus.Models
                 if (campoDeSentenca != null)
                     resultado = resultado.Replace(item.Value, campoDeSentenca.Valor);
             }
-            resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\n");
+            resultado = Regex.Replace(resultado, @"'?\s?&\s?\|", "\r\n");
             resultado = Regex.Replace(resultado.Trim(), @"^\(", "");
             if (Regex.Matches(resultado, @"\(").Count < Regex.Matches(resultado, @"\)").Count)
                 resultado = Regex.Replace(resultado.Trim(), @"\)$", "");
