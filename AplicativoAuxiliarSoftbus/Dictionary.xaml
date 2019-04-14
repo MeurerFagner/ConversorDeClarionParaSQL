@@ -2,12 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                    xmlns:viblendEditors="clr-namespace:VIBlend.WPF.Controls;assembly=VIBlend.WPF.Editors"
                     xmlns:local="clr-namespace:AplicativoAuxiliarSoftbus">
 
     <FontFamily x:Key="BaiscFontFamily">Microsoft Sans Serif</FontFamily>
     <sys:Double x:Key="FontSizeBasic">16</sys:Double>
     <Thickness x:Key="DefaultMargin">3</Thickness>
 
+
+    
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="FontSize" Value="{StaticResource FontSizeBasic}"/>
         <Setter Property="FontFamily" Value="{StaticResource BaiscFontFamily}"/>
@@ -42,4 +45,10 @@
         <Setter Property="Height" Value="40"/>
         <Setter Property="FontSize" Value="20"/>
     </Style>
+
+    <Style TargetType="{x:Type viblendEditors:DateTimeEditor}" BasedOn="{StaticResource {x:Type TextBox}}"/>
+
+
+    <Style TargetType="{x:Type viblendEditors:NumberEditor}" BasedOn="{StaticResource {x:Type TextBox}}"/>
+
 </ResourceDictionary>
