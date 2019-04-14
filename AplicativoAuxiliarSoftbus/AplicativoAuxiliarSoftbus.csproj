@@ -53,6 +53,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="VIBlend.WPF.Editors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5f568d4f9cd901f1, processorArchitecture=MSIL" />
+    <Reference Include="VIBlend.WPF.Utilities, Version=5.0.0.0, Culture=neutral, PublicKeyToken=d5be5ade8eba591d, processorArchitecture=MSIL" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -62,6 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\DataClarionConverter.cs" />
+    <Compile Include="Converters\HoraCalrionConverter.cs" />
     <Compile Include="Enums\TipoDeVariavel.cs" />
     <Compile Include="Models\VariavelClarion.cs" />
     <Compile Include="Models\ConversorDeSentenca.cs" />
