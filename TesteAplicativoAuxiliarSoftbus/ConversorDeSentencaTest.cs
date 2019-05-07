@@ -160,6 +160,34 @@ namespace TesteAplicativoAuxiliarSoftbus
             var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca).OrderBy(p => p.NomeVariavel) as ObservableCollection<VariavelClarion>;
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
+        [Test(Description = "Testa se retornara variaveis implicitas")]
+        public void RetornaObservableCollectionComUmaVariavelDeCadaTipodeVariavelImplicita()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                             "' where Valor >= '& valor$ &' and ''Sim'' = '''& clip(string\") &''' and '&|" +
+                             "'       Codigo = '& format(codigo#, @n_10) ";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "valor$",
+                    Tipo = TipoDeVariavel.Real
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "string\"",
+                    Tipo = TipoDeVariavel.String
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "codigo#",
+                    Tipo = TipoDeVariavel.Long
+                },
+            };
+            variaveisDeSentenca = variaveisDeSentenca.OrderBy(p => p.NomeVariavel) as ObservableCollection<VariavelClarion>;
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca).OrderBy(p => p.NomeVariavel) as ObservableCollection<VariavelClarion>;
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
         [Test(Description = "Testa se uma retornara um LONG sendo a variavel um metodo sem parametro")]
         public void RetornaObservableCollectionComUmaVariavelLongAPArtirDeUmMetodoSemParametro()
         {
@@ -541,6 +569,38 @@ namespace TesteAplicativoAuxiliarSoftbus
                              "       Data = 900000 and hora >= 88888888 and \r\n" +
                              "       Codigo = 1100";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variaveisDeSentenca));
+        }
+        [Test(Description = "Testa conversão de Sentenca que possui variaveis implicitas de tipos variados")]
+        public void RetornaSentencaComTiposDeVariaveisImplicitas()
+        {
+            string sentenca = "'select * from Tabela '&|" +
+                             "' where Valor >= '& valor$ &' and ''Sim'' = '''& clip(string\") &''' and '&|" +
+                             "'       Codigo = '& format(codigo#, @n_10) ";
+            var variavesDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "valor$",
+                    Tipo = TipoDeVariavel.Real,
+                    Valor = "100.1"
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "string\"",
+                    Tipo = TipoDeVariavel.String,
+                    Valor = "Sim"
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "codigo#",
+                    Tipo = TipoDeVariavel.Long,
+                    Valor = "110"
+                },
+            };
+            var resultado = "select * from Tabela \r\n" +
+                           " where Valor >= 100.1 and 'Sim' = 'Sim' and \r\n" +
+                           "       Codigo = 110";
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
         }
         #endregion
     }
