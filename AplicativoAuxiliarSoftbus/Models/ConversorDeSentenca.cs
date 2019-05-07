@@ -108,7 +108,7 @@ namespace AplicativoAuxiliarSoftbus.Models
 
         protected static class RegexPattern
         {
-            private const string VARIAVEL_MATCH = @"[A-Z\:\,\\_\(\)\d\s]+";
+            private const string VARIAVEL_MATCH = "[A-Z\\\"\\$\\#\\:\\,\\\\_\\(\\)\\d\\s]+";
             public const string VARIAVEL_LONG = @"(?<=((format)\())" + VARIAVEL_MATCH + @"(?=(,(\s+)?@))";
             public const string VARIAVEL_REAL = @"(?<=(&(?!(\s{0,}format\(|\s{0,}clip\())))" + VARIAVEL_MATCH;
             public const string QUEBRA_DE_LINHA = "\r\n";
