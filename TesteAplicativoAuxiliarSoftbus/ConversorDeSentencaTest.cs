@@ -160,9 +160,107 @@ namespace TesteAplicativoAuxiliarSoftbus
             var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca).OrderBy(p => p.NomeVariavel) as ObservableCollection<VariavelClarion>;
             Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
         }
+        [Test(Description = "Testa se uma retornara um LONG sendo a variavel um metodo sem parametro")]
+        public void RetornaObservableCollectionComUmaVariavelLongAPArtirDeUmMetodoSemParametro()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                              " where ID = '& format(metodo(), @n_10)";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "metodo()",
+                    Tipo = TipoDeVariavel.Long
+                }
+            };
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
+        [Test(Description = "Testa se uma retornara um LONG sendo a variavel um metodo com parametro")]
+        public void RetornaObservableCollectionComUmaVariavelLongAPArtirDeUmMetodoComParametro()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                              " where ID = '& format(SoNumeros(wVariavel), @n_10)";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "SoNumeros(wVariavel)",
+                    Tipo = TipoDeVariavel.Long
+                }
+            };
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
+        [Test(Description = "Testa se uma retornara um LONG sendo a variavel um metodo com outro metodo como parametro")]
+        public void RetornaObservableCollectionComUmaVariavelLongAPArtirDeUmMetodoDentroDeMetodo()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                              " where ID = '& format(SoNumeros(clip(wVariavel)), @n_10)";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "SoNumeros(clip(wVariavel))",
+                    Tipo = TipoDeVariavel.Long
+                }
+            };
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
+        [Test(Description = "Testa se uma retornara um LONG sendo a variavel um metodo com varios parametros parametro")]
+        public void RetornaObservableCollectionComUmaVariavelLongAPArtirDeUmMetodoComVariosParametros()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                              " where ID = '& format(sub(wVariave,l,4), @n_10)";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "sub(wVariave,l,4)",
+                    Tipo = TipoDeVariavel.Long
+                }
+            };
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
+        [Test(Description = "Testa se uma retorna variaveis do tipo Data quando usa metodo today")]
+        public void RetornaObservableCollectionComVariaveiDataQuandoEhMetodoToady()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                              " where Emissao <= '& format(today(), @n_10)";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "today()",
+                    Tipo = TipoDeVariavel.Data
+                }
+            };
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
+        [Test(Description = "Testa se uma retorna variavel do tipo Hora quando for metodo clock")]
+        public void RetornaObservableCollectionComVariavelHoraQandoEhMetodoClock()
+        {
+            string sentenca = "'select * from Tabela '&|\n" +
+                              " where HoraEmissao <= '& format(clock(), @n_10)";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "clock()",
+                    Tipo = TipoDeVariavel.Hora
+                }                
+            };
+            var resultado = ConversorDeSentenca.ExtrairVariaveisCalrionDeSentenca(sentenca);
+            Assert.AreEqual(JsonConvert.SerializeObject(variaveisDeSentenca), JsonConvert.SerializeObject(resultado));
+        }
+
 
         #endregion
 
+        #region METODO ConverteSentencaClarionParaSQL
         [Test(Description = "Testa a conversão da Sentença vinda do clarion para uma com valores definidos")]
         public void RetornaSentencaSQLConvertidaComVariosCamposNaoRepetidos()
         {
@@ -203,9 +301,9 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "1100"
                 },
             };
-            string resultado = "select * from Tabela \n " +
-                             " where Valor >= 100.10 and 'Sim' = 'Sim' and \n" +
-                             "       Data = 900000 and hora >= 88888888 and \n" +
+            string resultado = "select * from Tabela \r\n " +
+                             " where Valor >= 100.10 and 'Sim' = 'Sim' and \r\n" +
+                             "       Data = 900000 and hora >= 88888888 and \r\n" +
                              "       Codigo = 1100";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variaveisDeSentenca));
         }
@@ -223,16 +321,16 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "1100"
                 }
             };
-            var resultado = "select * from Tabelas \n" +
+            var resultado = "select * from Tabelas \r\n" +
                            " where Codigo = 1100 or 1100 = 0";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
         }
-        [Test(Description ="Testa conversão de Senteça que possui quebra de linha(&|) logo apos a variavel")]
+        [Test(Description = "Testa conversão de Senteça que possui quebra de linha(&|) logo apos a variavel")]
         public void RetornaSentecaComQuebraDeLinhaAposVariavel()
         {
             var sentenca = "'select * from Tabelas '&|" +
-                         "' where Codigo = '& format(wCodigo, @n_10) &|"+
-                         "' or Empresa = '& format(wEmpresa,@n_10) &|"+
+                         "' where Codigo = '& format(wCodigo, @n_10) &|" +
+                         "' or Empresa = '& format(wEmpresa,@n_10) &|" +
                          "' order by 1'";
             var variavesDeSentenca = new ObservableCollection<VariavelClarion>
             {
@@ -249,9 +347,9 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "1100"
                 }
             };
-            var resultado = "select * from Tabelas \n" +
-                           " where Codigo = 110\n"+
-                           " or Empresa = 1100\n"+
+            var resultado = "select * from Tabelas \r\n" +
+                           " where Codigo = 110\r\n" +
+                           " or Empresa = 1100\r\n" +
                            " order by 1";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
         }
@@ -283,13 +381,13 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "order by 1"
                 },
             };
-            var resultado = "select * from Tabelas \n" +
-                           " where Codigo = 110 or \n" +
-                           " 1100 = Empresa \n" +
+            var resultado = "select * from Tabelas \r\n" +
+                           " where Codigo = 110 or \r\n" +
+                           " 1100 = Empresa \r\n" +
                            " order by 1";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
         }
-        [Test(Description ="Testaconversão de Sentenca que possui format de tipos variados")]
+        [Test(Description = "Testaconversão de Sentenca que possui format de tipos variados")]
         public void RetornaSentencaComTiposDeFormatsVariados()
         {
             var sentenca = "'select * from Tabelas '&|" +
@@ -309,7 +407,7 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "1100"
                 }
             };
-            var resultado = "select * from Tabelas \n" +
+            var resultado = "select * from Tabelas \r\n" +
                            " where Codigo = 110 or 1100 = Empresa";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
         }
@@ -327,7 +425,7 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "110"
                 },
             };
-            var resultado = "select * from Tabelas \n" +
+            var resultado = "select * from Tabelas \r\n" +
                             " where Codigo = 110";
 
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
@@ -347,13 +445,12 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "110"
                 },
             };
-            var resultado = "select * from Tabelas \n" +
+            var resultado = "select * from Tabelas \r\n" +
                             " where Codigo = 110";
 
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
 
         }
-
         [Test(Description = "Testa se converte para sentenca mantaendo a indentaçao")]
         public void RetornaSentencaMantendoIndentacao()
         {
@@ -370,13 +467,60 @@ namespace TesteAplicativoAuxiliarSoftbus
                     Valor = "110"
                 },
             };
-            var resultado = "select * from Tabelas \n" +
-                           " where Codigo = 110 and \n"+
-                           "       Campo1 = campo1 and \n" +
+            var resultado = "select * from Tabelas \r\n" +
+                           " where Codigo = 110 and \r\n" +
+                           "       Campo1 = campo1 and \r\n" +
                            "       campo2 = Campo2";
 
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
 
         }
+        [Test(Description = "Testa a conversão da Sentença vinda do clarion com Metodos nas variaveis para uma com valores definidos")]
+        public void RetornaSentencaSQLConvertidaComCamposComVariaveisVindoDeMetodos()
+        {
+            string sentenca = "'select * from Tabela '&| " +
+                             "' where Valor >= '& metodo(parametro1, parametro2) &' and ''Sim'' = '''& clip(outrometodo(wString)) &''' and '&|" +
+                             "'       Data = '& format(today(),@n_10) &' and hora >= '& format(clock(), @n_10) &' and '&|" +
+                             "'       Codigo = '& format(SoNumeros(GLO:Codigo), @n_10))";
+            ObservableCollection<VariavelClarion> variaveisDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "metodo(parametro1, parametro2)",
+                    Tipo = TipoDeVariavel.Real,
+                    Valor = "100.10"
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "outrometodo(wString)",
+                    Tipo = TipoDeVariavel.String,
+                    Valor = "Sim"
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "today()",
+                    Tipo = TipoDeVariavel.Data,
+                    Valor = "900000"
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "clock()",
+                    Tipo = TipoDeVariavel.Hora,
+                    Valor = "88888888"
+                },
+                new VariavelClarion
+                {
+                    NomeVariavel = "SoNumeros(GLO:Codigo)",
+                    Tipo = TipoDeVariavel.Long,
+                    Valor = "1100"
+                },
+            };
+            string resultado = "select * from Tabela \r\n " +
+                             " where Valor >= 100.10 and 'Sim' = 'Sim' and \r\n" +
+                             "       Data = 900000 and hora >= 88888888 and \r\n" +
+                             "       Codigo = 1100";
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variaveisDeSentenca));
+        }
+        #endregion
     }
 }
