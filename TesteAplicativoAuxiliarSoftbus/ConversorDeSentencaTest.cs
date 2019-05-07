@@ -451,6 +451,27 @@ namespace TesteAplicativoAuxiliarSoftbus
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
 
         }
+        [Test(Description = "Testa se converte para sentenca mesmo dentro do SEND com espaço após o nome da Tabelas")]
+        public void RetornaSentencaDentroDoSendComEspacoAposNomeDaTabela()
+        {
+            var sentenca = "send(Tabelas  ,'select * from Tabelas '&|" +
+                           "' where Codigo = '& format(wCodigo, @n_10))";
+            var variavesDeSentenca = new ObservableCollection<VariavelClarion>
+            {
+                new VariavelClarion
+                {
+                    NomeVariavel = "wCodigo",
+                    Tipo = TipoDeVariavel.Long,
+                    Valor = "110"
+                },
+            };
+            var resultado = "select * from Tabelas \r\n" +
+                            " where Codigo = 110";
+
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
+
+        }
+
         [Test(Description = "Testa se converte para sentenca mantaendo a indentaçao")]
         public void RetornaSentencaMantendoIndentacao()
         {

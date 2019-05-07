@@ -112,7 +112,7 @@ namespace AplicativoAuxiliarSoftbus.Models
             public const string VARIAVEL_LONG = @"(?<=((format)\())" + VARIAVEL_MATCH + @"(?=(,(\s+)?@))";
             public const string VARIAVEL_REAL = @"(?<=(&(?!(\s{0,}format\(|\s{0,}clip\())))" + VARIAVEL_MATCH;
             public const string QUEBRA_DE_LINHA = "\r\n";
-            public const string METODOS_SQL_CLARION = @"(exeSQL\d?\('|send\(\w+,')";
+            public const string METODOS_SQL_CLARION = @"(exeSQL\d?\('|send\(\w+\s*,')";
             public const string FIM_DE_LINHA_CLARION = @"'?\s?&\s?\|";
             public const string VARIAVEL_STRING = @"(?<=(('''\s{0,}&\s{0,}clip\()))" + VARIAVEL_MATCH + @"(?=(\)\s{0,}&\s?'''))";
             public const string VARIAVEIS_EM_SENTENCA = @"('&\s*|(?<=\|\s*))(((format)|(clip))\()?" + VARIAVEL_MATCH + @"(\s*@n_?\d+)?\)?\s*(&'|(?=&\s*))?";
