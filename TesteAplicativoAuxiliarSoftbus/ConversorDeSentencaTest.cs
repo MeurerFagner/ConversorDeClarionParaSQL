@@ -477,7 +477,10 @@ namespace TesteAplicativoAuxiliarSoftbus
                             " where Codigo = 110";
 
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
+            sentenca = "send(Tabelas , 'select * from Tabelas '&|" +
+                          "' where Codigo = '& format(wCodigo, @n_10))";
 
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca),"TESTE COM ESPAÇO APÓS A VIRGULA");
         }
         [Test(Description = "Testa se converte para sentenca mesmo dentro do SEND com espaço após o nome da Tabelas")]
         public void RetornaSentencaDentroDoSendComEspacoAposNomeDaTabela()
