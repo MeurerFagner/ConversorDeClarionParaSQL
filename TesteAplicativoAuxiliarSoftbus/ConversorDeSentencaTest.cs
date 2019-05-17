@@ -334,6 +334,11 @@ namespace TesteAplicativoAuxiliarSoftbus
                              "       Data = 900000 and hora >= 88888888 and \r\n" +
                              "       Codigo = 1100";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variaveisDeSentenca));
+            sentenca = "'select * from Tabela '&  | " +
+                             "' where Valor >= '& wValor &' and ''Sim'' = '''& clip(wString) &''' and '& |" +
+                             "'       Data = '& format(wData,@n_10) &' and hora >= '& format(wHora1, @n_10) &' and '&|" +
+                             "'       Codigo = '& format(GLO:Codigo, @n_10))";
+            Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variaveisDeSentenca),"TESTA COM ESPAÇO ENTRE & E |");
         }
         [Test(Description = "Testa Conversão para SQL de Sentenca com campos Reptidos")]
         public void RetornaSentencaComCamposRepitidos()
@@ -415,7 +420,7 @@ namespace TesteAplicativoAuxiliarSoftbus
                            " order by 1";
             Assert.AreEqual(resultado, ConversorDeSentenca.ConverteSentencaClarionParaSQL(sentenca, variavesDeSentenca));
         }
-        [Test(Description = "Testaconversão de Sentenca que possui format de tipos variados")]
+        [Test(Description = "Testa conversão de Sentenca que possui format de tipos variados")]
         public void RetornaSentencaComTiposDeFormatsVariados()
         {
             var sentenca = "'select * from Tabelas '&|" +
