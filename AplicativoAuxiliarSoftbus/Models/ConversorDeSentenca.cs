@@ -12,6 +12,7 @@ namespace AplicativoAuxiliarSoftbus.Models
     {
         public static ObservableCollection<VariavelClarion> ExtrairVariaveisCalrionDeSentenca(string sentenca)
         {
+            sentenca = SanetizaSentenca(sentenca);
             ObservableCollection<VariavelClarion> colecaoDeVariaveisCalrion = new ObservableCollection<VariavelClarion>();
             if (string.IsNullOrEmpty(sentenca))
                 return colecaoDeVariaveisCalrion;
@@ -75,6 +76,7 @@ namespace AplicativoAuxiliarSoftbus.Models
 
         public static string ConverteSentencaClarionParaSQL(string sentencaClarion, ObservableCollection<VariavelClarion> variaveisCalrions)
         {
+            sentencaClarion = SanetizaSentenca(sentencaClarion);
             sentencaClarion = RemoveFromStringRegexMatch(sentencaClarion, RegexPattern.QUEBRA_DE_LINHA);
             sentencaClarion = RemoveMetodoSQLCalrion(sentencaClarion);
 
@@ -120,6 +122,12 @@ namespace AplicativoAuxiliarSoftbus.Models
         private static string RemoveFromStringRegexMatch(string input, string pattern)
         {
             return Regex.Replace(input.Trim(), pattern, "", RegexOptions.IgnoreCase);
+        }
+
+        private static string SanetizaSentenca(string sentenca)
+        {
+            sentenca = sentenca.Replace("& '", "&'").Replace("' &", "'&");
+            return sentenca;
         }
 
         protected static class RegexPattern
