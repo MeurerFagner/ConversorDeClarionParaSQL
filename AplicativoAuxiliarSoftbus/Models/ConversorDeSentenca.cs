@@ -94,10 +94,26 @@ namespace AplicativoAuxiliarSoftbus.Models
 
         private static string RemoveMetodoSQLCalrion(string sentenca)
         {
+            sentenca = RemoveSelectCampos(sentenca);
             sentenca = RemoveFromStringRegexMatch(sentenca, RegexPattern.METODOS_SQL_CLARION);
             sentenca = RemoveFromStringRegexMatch(sentenca, @"^\(");
             if (Regex.Matches(sentenca, @"\(").Count < Regex.Matches(sentenca, @"\)").Count)
                 sentenca = RemoveFromStringRegexMatch(sentenca, @"\)$");
+            return sentenca;
+        }
+
+        private static string RemoveSelectCampos(string sentenca)
+        {
+            var rgx = new Regex(RegexPattern.SELECT_CAMPOS, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            if (rgx.IsMatch(sentenca))
+            {
+                var tabela = Regex.Match(
+                    rgx.Match(sentenca).Value, 
+                    RegexPattern.TABELA_EM_SELECT_CAMPOS, 
+                    RegexOptions.IgnoreCase | RegexOptions.Multiline).Value;
+                sentenca = Regex.Replace(sentenca, RegexPattern.SELECT_CAMPOS, $"'select * from {tabela.Trim()} '", RegexOptions.IgnoreCase);
+
+            }
             return sentenca;
         }
 
@@ -109,6 +125,8 @@ namespace AplicativoAuxiliarSoftbus.Models
         protected static class RegexPattern
         {
             private const string VARIAVEL_MATCH = "[A-Z\\\"\\$\\#\\:\\,\\\\_\\(\\)\\d\\s]+";
+            public const string SELECT_CAMPOS = @"(SelectCampos\s*\(\s*'[A-Z\\_\d]+'\s*\))";
+            public const string TABELA_EM_SELECT_CAMPOS = @"(?<=(SelectCampos\s*\(\s*'))[A-Z\\_\d]+";
             public const string VARIAVEL_LONG = @"(?<=((format)\())" + VARIAVEL_MATCH + @"(?=(,(\s+)?@))";
             public const string VARIAVEL_REAL = @"(?<=(&(?!(\s{0,}format\(|\s{0,}clip\())))" + VARIAVEL_MATCH;
             public const string QUEBRA_DE_LINHA = "\r\n";
